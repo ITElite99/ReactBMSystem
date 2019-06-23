@@ -8,7 +8,7 @@
 
 
 import React,{ Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 //引入前端路由
 import Login from './pages/login';
@@ -20,7 +20,8 @@ export default class App extends Component {
         return (
             <Switch>
                 <Route path="/login" component={Login} />
-                <Route path="/" component={Admin} />
+                <Route path="/home" component={Admin}/>
+                <Redirect to="/home"/>
             </Switch>
             );
     }

@@ -1,9 +1,10 @@
 /**
  * 用户登录路由组件
- *
  */
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
+
+import { reqLogin } from '../../api/index';
 
 //引入图片资源，在react脚手架中图片必须引入才会打包
 import logo from './logo.png';
@@ -29,28 +30,49 @@ class Login extends Component {
         }else if(!/^[a-zA-Z_0-9]+$/.test(value)){
             callback(`${name}只能包含英文字母、下划线、数字`);
         }else{
-            //callback必须调用
-            //不传参代表校验通过，传参代表校验失败
+            // callback必须调用
+            // 不传参代表校验通过，传参代表校验失败
             callback();
         }
     };
+
+    //解决异常提示的问题
+    handleing = false;
 
     //提交表单
     handleSubmit = (e) => {
         //阻止表单默认事件
         e.preventDefault();
+
+        if (this.handleing) return;
+        this.handleing = true;
+
         //校验一组表单数据是否都校验通过
         //第一个参数：代表校验表单的结果，要么是异常信息{} 要么null-校验通过
         //第二个参数：值
-        this.props.form.validateFields((error, value) => {
-            console.log(error, value);
-            if(!error){//校验通过
+        this.props.form.validateFields( async (error, value) => {
+            if(!error){ // 校验通过
+                this.handleing = false;
                 const { username, password } = value;
                 //发送请求
-                console.log('登录请求：',username, password);
+                // const result = await ajax( '/login',{ username, password }, 'post' );
+                const result = await reqLogin( username, password );
+                if( result ){
+                    //跳转到admin主页 （采用代理服务器方法解决了跨域问题）
+                    this.props.history.replace('/home');
+                }else{
+                    //重置密码
+                    this.props.form.resetFields(['password']);
+                }
             }else{
-                //校验失败
-                console.log('登录表单校验失败：', error);
+                // 异常信息提示  显示时间
+                message.error("表单校验失败！", 2, () => {
+                    //两秒后执行这个函数  可以继续点击这个按钮
+                    this.handleing = false;
+                });
+                //重置密码
+                this.props.form.resetFields(['password'])
+                // 校验失败
             }
         });
     };
