@@ -6,6 +6,8 @@ import React, { Component } from 'react';
 import { Layout } from 'antd';
 import LeftNav from "../../components/left-nav";
 import HeaderMain from '../../components/header-main';
+import { getItem } from '../../utils/storage-tools';
+import { reqValidateUserInfo } from '../../api';
 import './index.less';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -21,6 +23,27 @@ export default class Admin extends Component {
         console.log(collapsed);
         this.setState({ collapsed });
     };
+
+    //登录校验
+    componentWillMount() {
+        //获取第一次登录保存在localstorage中的用户数据
+        const user = getItem();
+        //如果存在，说明用户有登录本地缓存记录
+
+        //此处待优化功能，如果是登入成功的就不需要再做验证  redux
+
+        if(user && user._id){
+            //1、向服务器发送请求(服务器代码手动添加)，
+            //2、api函数定义
+            //3、判断用户信息是否合法，user._id是唯一值
+            const result = reqValidateUserInfo(user._id);
+            //如果有找到,说明用户数据合法，直接登录成功
+            if(result) return;
+        }
+        //未找到登录信息，跳转到登录页面
+        this.props.history.replace('/login');
+    }
+
 
     //渲染
     render() {

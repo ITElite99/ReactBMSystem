@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { Form, Icon, Input, Button, message } from 'antd';
 
 import { reqLogin } from '../../api/index';
+import { setItem } from '../../utils/storage-tools';
 
 //引入图片资源，在react脚手架中图片必须引入才会打包
 import logo from './logo.png';
@@ -58,8 +59,10 @@ class Login extends Component {
                 // const result = await ajax( '/login',{ username, password }, 'post' );
                 const result = await reqLogin( username, password );
                 if( result ){
+                    //登录成功时保存第一次登录的用户数据
+                    setItem(result);
                     //跳转到admin主页 （采用代理服务器方法解决了跨域问题）
-                    this.props.history.replace('/home');
+                    this.props.history.replace('/');
                 }else{
                     //重置密码
                     this.props.form.resetFields(['password']);
