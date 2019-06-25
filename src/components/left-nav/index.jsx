@@ -26,6 +26,8 @@ class LeftNav extends Component {
     componentWillMount = () => {
         //获取当前路径名称
         const { pathname } = this.props.location;
+        //如果路径不是菜单列表中的某一项，默认是/home
+        let isHome = true;
 
         this.menus = menuList.map( (menu) => {
             //判断是否包含children: 是-二级菜单  否-一级菜单
@@ -47,18 +49,22 @@ class LeftNav extends Component {
                             // 二级菜单
                             if(item.key === pathname){
                                this.openKey = menu.key;
+                                isHome = false;
                             }
                             return this.createItem(item);
                         })
                     }
                 </SubMenu>
             }else{ // 一级菜单
+                if(menu.key === pathname){
+                    isHome = false;
+                }
                 return this.createItem(menu);
             }
-        } )
+        } );
 
         //初始化绿色选中样式菜单
-        this.selectedKey = pathname;
+        this.selectedKey = isHome? '/home': pathname;
         console.log(this.selectedKey);
     };
 

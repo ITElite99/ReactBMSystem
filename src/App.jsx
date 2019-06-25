@@ -8,7 +8,7 @@
 
 
 import React,{ Component } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 //引入前端路由
 import Login from './pages/login';

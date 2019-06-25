@@ -25,6 +25,8 @@ export default class Admin extends Component {
 
     state = {
         collapsed: false,
+        isLoading: true,
+        success: false
     };
     //折叠
     onCollapse = collapsed => {
@@ -33,7 +35,8 @@ export default class Admin extends Component {
     };
 
     //登录校验
-    componentWillMount() {
+    // componentWillMount() {
+    componentDidMount() {
         //获取第一次登录保存在localstorage中的用户数据
         const user = getItem();
         //如果存在，说明用户有登录本地缓存记录
@@ -46,47 +49,56 @@ export default class Admin extends Component {
             //3、判断用户信息是否合法，user._id是唯一值
             const result = reqValidateUserInfo(user._id);
             //如果有找到,说明用户数据合法，直接登录成功
-            if(result) return;
+            if(result)  // 这里的return是为了结束当前函数，而不是为了给谁返回值
+                return this.setState({
+                    isLoading: false,
+                    success: true
+                });
         }
         //未找到登录信息，跳转到登录页面
-        this.props.history.replace('/login');
+        //this.props.history.replace('/login');
+
+        this.setState({
+            isLoading: false,
+            success: false
+        })
     }
 
 
     //渲染
     render() {
-        const { collapsed } = this.state;
-        return (
-            <Layout style={{ minHeight: '100vh' }}>
-                <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
-                    <LeftNav collapsed={collapsed} />
-                </Sider>
-                <Layout>
-                    {/*style{{}}中不能写单位*/}
-                    <Header style={{ background: '#fff', padding: 0, minHeight: 100 }} >
-                        <HeaderMain />
-                    </Header>
-                    <Content style={{ margin: '25px 16px' }}>
-                        <div style={{ padding: 24, background: '#fff', minHeight: 500 }} >
-                            <Switch>
-                                <Route path="/home" component={Home}/>
-                                <Route path="/category" component={Category}/>
-                                <Route path="/product" component={Product}/>
-                                <Route path="/user" component={User}/>
-                                <Route path="/role" component={Role}/>
-                                <Route path="/charts/line" component={Line}/>
-                                <Route path="/charts/bar" component={Bar}/>
-                                <Route path="/charts/pie" component={Pie}/>
-                                <Redirect to="/home" />
-                            </Switch>
-                        </div>
-                    </Content>
-                    <Footer style={{ textAlign: 'center' }}>
-                        推荐使用谷歌浏览器，可以获得更佳页面操作体验
-                    </Footer>
-                </Layout>
+        const { collapsed, isLoading, success } = this.state;
+
+        if(isLoading) return null;
+        return success ? <Layout style={{ minHeight: '100vh' }}>
+            <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
+                <LeftNav collapsed={collapsed} />
+            </Sider>
+            <Layout>
+                {/*style{{}}中不能写单位*/}
+                <Header style={{ background: '#fff', padding: 0, minHeight: 100 }} >
+                    <HeaderMain />
+                </Header>
+                <Content style={{ margin: '25px 16px' }}>
+                    <div style={{ padding: 24, background: '#fff', minHeight: 500 }} >
+                        <Switch>
+                            <Route path="/home" component={Home}/>
+                            <Route path="/category" component={Category}/>
+                            <Route path="/product" component={Product}/>
+                            <Route path="/user" component={User}/>
+                            <Route path="/role" component={Role}/>
+                            <Route path="/charts/line" component={Line}/>
+                            <Route path="/charts/bar" component={Bar}/>
+                            <Route path="/charts/pie" component={Pie}/>
+                            <Redirect to="/home" />
+                        </Switch>
+                    </div>
+                </Content>
+                <Footer style={{ textAlign: 'center' }}>
+                    推荐使用谷歌浏览器，可以获得更佳页面操作体验
+                </Footer>
             </Layout>
-        )
+        </Layout> : <Redirect to="/login" />
     }
 }
 

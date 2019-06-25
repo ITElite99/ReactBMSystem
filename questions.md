@@ -38,6 +38,37 @@ constructor、render外），就优化为【工厂函数组件】的方式实现
 工厂函数组件：(1)组件名首字母必须大写，否则报错。(2)必须写关闭标签/,如果标签内没有
 内容，写单标签，如果标签内有内容，写双标签。(3)只有一个根标签。
 
-定义ES6类组件：
+定义ES6类组件：默认一上来就使用ES6类组件
 
 7、侧边导航：为什么点击侧边导航的按钮时会触发两次render?  生命周期不是很熟悉！！
+
+Qa：原来的样式设计模式，直接用，不去研究
+
+8、Warning: Can't perform a React state update on an unmounted component. 
+This is a no-op, but it indicates a memory leak in your application. To fix, 
+cancel all subscriptions and asynchronous tasks in the componentWillUnmount 
+method.
+
+Qa:清除定时器和ajax请求
+
+9、表单请求校验异常和非异常的结果callback用return用返回？
+
+10、api中方法的参数要跟接口文档的参数顺序一一对应吗？
+
+11、form.validateFields什么情况会有err
+
+12、函数返回值是一个函数，这个是高阶函数，那么是怎么执行的，函数执行定义后的结果
+是什么，函数调用后的结果是什么，如：
+    `toggleDisplay = (stateName, stateValue) => {
+        return () => {
+          this.setState({
+            [stateName]: stateValue
+          })
+        }
+      };`
+
+13、天气请求失败默认显示晴图标和文字吗？确认一下代码。
+
+14、postMan没有网络打不开吗？
+
+
