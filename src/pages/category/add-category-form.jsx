@@ -20,7 +20,7 @@ class AddCategoryForm extends Component {
         }
         const res = this.props.categories.find((category) => category.name === value);
         if(res){
-            return  callback('输入的分类名称已经存在，请重新输入');
+            callback('输入的分类名称已经存在，请重新输入');
         }else{
             callback();
         }

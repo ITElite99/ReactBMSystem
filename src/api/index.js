@@ -64,7 +64,7 @@ export const reqCategories = (parentId) => ajax( '/manage/category/list',{ paren
  * @param categoryName
  * @returns {*}
  */
-export const reqAddCategory = (parentId, categoryName) => ajax( 'manage/category/add',{ parentId, categoryName }, 'post');
+export const reqAddCategory = (parentId, categoryName) => ajax( '/manage/category/add',{ parentId, categoryName }, 'post');
 
 /**
  * 修改分类的名称
@@ -72,5 +72,14 @@ export const reqAddCategory = (parentId, categoryName) => ajax( 'manage/category
  * @param categoryName
  * @returns {*}
  */
-export const reqUpdateCategoryName = (categoryId, categoryName) => ajax( 'manage/category/update',{ categoryId, categoryName }, 'post');
+export const reqUpdateCategoryName = (categoryId, categoryName ) => ajax( '/manage/category/update',{ categoryId, categoryName }, 'post');
+
+/**
+ * 获取商品分页列表
+ * 默认get请求 可不写请求方式
+ * @param pageNum
+ * @param pageSize
+ * @returns {*}
+ */
+export const reqProducts = (pageNum, pageSize ) => ajax( '/manage/product/list',{ pageNum, pageSize });
 

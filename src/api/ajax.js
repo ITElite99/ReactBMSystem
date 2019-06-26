@@ -23,7 +23,8 @@ export default function ajax( url, data = {}, method = 'GET' ) {
             const { data } = res;
             if( data.status === 0 ){ // 成功
                 // 请求成功并且状态是成功  会有返回数据
-                return data.data;
+                // 注意返回结果如果为undefined就给一个{}
+                return data.data || {};
             }else{ // 失败
                 message.error(data.msg, 2);
             }

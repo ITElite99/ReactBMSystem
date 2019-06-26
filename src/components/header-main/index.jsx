@@ -85,7 +85,12 @@ class HeaderMain extends Component {
     // 获取title
     getTitle = (nextProps) => {
         //地址栏地址
-        const { pathname } = nextProps.location;
+        let { pathname } = nextProps.location;
+        const pathnameReg = /^\/product\//;
+        if(pathnameReg.test(pathname)){
+            pathname = pathname.slice(0,8);
+        }
+
         for (let i = 0; i < menuList.length; i++) {
             const menu = menuList[i];
             if(menu.children){ // 二级菜单

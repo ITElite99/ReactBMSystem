@@ -49,13 +49,19 @@ This is a no-op, but it indicates a memory leak in your application. To fix,
 cancel all subscriptions and asynchronous tasks in the componentWillUnmount 
 method.
 
-Qa:清除定时器和ajax请求
+Qa：清除定时器和ajax请求
 
 9、表单请求校验异常和非异常的结果callback用return用返回？
 
+Qa：校验不通过时，只要调用callback()就可以，如果后面有其他的代码，在调用callback()前加return。
+
 10、api中方法的参数要跟接口文档的参数顺序一一对应吗？
 
+Qa：不用，参数是个对象的话，没有顺序。
+
 11、form.validateFields什么情况会有err
+
+Qa：统一验证结果有问题的时候就会异常
 
 12、函数返回值是一个函数，这个是高阶函数，那么是怎么执行的，函数执行定义后的结果
 是什么，函数调用后的结果是什么，如：
@@ -68,6 +74,8 @@ Qa:清除定时器和ajax请求
       };`
 
 13、天气请求失败默认显示晴图标和文字吗？确认一下代码。
+
+Qa：
 
 14、postMan没有网络打不开吗？
 
