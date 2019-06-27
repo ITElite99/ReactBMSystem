@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Select, Input, Button, Icon, Table } from 'antd';
+import { Card, Select, Input, Button, Icon, Table, LocaleProvider } from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 import MyButton from '../../../components/my-button';
 
 import { reqProducts } from '../../../api';
@@ -13,25 +14,38 @@ export default class Index extends Component {
     // 初始化状态 数据
     state = {
         products: [],
-        isLoading: true
+        isLoading: true,
+        total: 0
     };
     // 静态页面渲染完成后，动态请求数据
-    async componentDidMount() {
+    componentDidMount() {
         // 显示加载中
         this.setState({
             isLoading: true
         });
-        const result = await reqProducts(1,3);
-        if(result){
-            this.setState({
-                products: result.list
-            })
-        }
+        // 初始化加载商品列表
+        this.getProducts(1, 3);
         // 加载结束
         this.setState({
             isLoading: false
         });
     }
+    // (公共方法)请求商品列表数据
+    getProducts = async (page, pageSize) => {
+        const result = await reqProducts(page,pageSize);
+        if(result){
+            this.setState({
+                products: result.list,
+                total: result.total
+            })
+        }
+    };
+    // 修改商品列表中的商品数据
+    showUpdateProduct = (product) => {
+        return () => {
+            this.props.history.push( '/product/saveupdate', product );
+        };
+    };
 
     // 添加产品
     showAddProduct = () => {
@@ -39,7 +53,7 @@ export default class Index extends Component {
     };
 
     render() {
-        const { products, isLoading } = this.state;
+        const { products, isLoading, total } = this.state;
         // 设置表头列
         const columns = [
             {
@@ -70,7 +84,7 @@ export default class Index extends Component {
                 render: (product) => {
                     return <div>
                         <MyButton>详情</MyButton>
-                        <MyButton>修改</MyButton>
+                        <MyButton onClick={this.showUpdateProduct(product)}>修改</MyButton>
                     </div>
                 }
             }
@@ -89,19 +103,26 @@ export default class Index extends Component {
             }
             extra={<Button type="primary" onClick={this.showAddProduct}><Icon type="plus" />添加产品</Button>}
         >
-            <Table
-                columns={columns}
-                dataSource={products}
-                bordered
-                pagination={{
-                   showQuickJumper: true,
-                   showSizeChanger: true,
-                   pageSizeOptions: ['3','5','10','20','50'],
-                    defaultPageSize: 3
-                }}
-                rowKey='_id'
-                loading={isLoading}
-            />
+
+            <LocaleProvider locale={zhCN}>
+                <Table
+                    columns={columns}
+                    dataSource={products}
+                    bordered
+                    pagination={{
+                       showQuickJumper: true,
+                       showSizeChanger: true,
+                       pageSizeOptions: ['3','5','10','20','50'],
+                        defaultPageSize: 3,
+                        total,
+                        onChange: this.getProducts,
+                        onShowSizeChange: this.getProducts,
+                        showTotal : total  => `共 ${total} 条`
+                    }}
+                    rowKey='_id'
+                    loading={isLoading}
+                />
+            </LocaleProvider>
         </Card>
 
     }

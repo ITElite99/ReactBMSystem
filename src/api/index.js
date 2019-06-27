@@ -83,3 +83,35 @@ export const reqUpdateCategoryName = (categoryId, categoryName ) => ajax( '/mana
  */
 export const reqProducts = (pageNum, pageSize ) => ajax( '/manage/product/list',{ pageNum, pageSize });
 
+/**
+ * 添加商品
+ * @param name
+ * @param desc
+ * @param price
+ * @param categoryId
+ * @param pCategoryId
+ * @param detail
+ * @returns {*}
+ */
+export const reqAddProduct = ({ name, desc, price, categoryId, pCategoryId, detail }) => ajax('/manage/product/add',{ name, desc, price, categoryId, pCategoryId, detail }, 'post');
+
+/**
+ * 更新商品
+ * @param name
+ * @param desc
+ * @param price
+ * @param categoryId
+ * @param pCategoryId
+ * @param detail
+ * @param _id
+ * @returns {*}
+ */
+export const reqUpdateProduct = ({ name, desc, price, categoryId, pCategoryId, detail, _id }) => ajax('/manage/product/update',{ name, desc, price, categoryId, pCategoryId, detail, _id }, 'post');
+
+/**
+ *  删除上传图片
+ * @param name
+ * @param id
+ * @returns {*}
+ */
+export const reqDeleteProductImg = (name, id) => ajax('/manage/img/delete',{ name, id }, 'post');

@@ -20,6 +20,7 @@ export default function ajax( url, data = {}, method = 'GET' ) {
     // 发送请求
     return axios[method]( url,reqParams )
         .then((res) => {
+
             const { data } = res;
             if( data.status === 0 ){ // 成功
                 // 请求成功并且状态是成功  会有返回数据
